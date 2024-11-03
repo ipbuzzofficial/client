@@ -1,46 +1,29 @@
-import React, { FC, useEffect, useState } from "react";
-import axios from "axios";
+import React, { FC } from "react";
 
 type Props = {
-  videoUrl: string;
-  title: string;
+  videoUrl: string; // This should be the Google Drive file ID
+  title: string; // Title can be used for accessibility or display purposes
 };
 
-const CoursePlayer: FC<Props> = ({ videoUrl }) => {
-  const [videoData, setVideoData] = useState({
-    otp: "",
-    playbackInfo: "",
-  });
-
-  useEffect(() => {
-    axios
-      .post(`${process.env.NEXT_PUBLIC_SERVER_URI}getVdoCipherOTP`, {
-        videoId: videoUrl,
-      })
-      .then((res) => {
-        setVideoData(res.data);
-      });
-  }, [videoUrl]);
-
+const CoursePlayer: FC<Props> = ({ videoUrl, title }) => {
   return (
     <div
       style={{ position: "relative", paddingTop: "56.25%", overflow: "hidden" }}
     >
-      {videoData.otp && videoData.playbackInfo !== "" && (
-        <iframe
-          src={`https://player.vdocipher.com/v2/?otp=${videoData?.otp}&playbackInfo=${videoData.playbackInfo}&player=sAQRp4lh4pWNL4bx`}
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            border: 0,
-          }}
-          allowFullScreen={true}
-          allow="encrypted-media"
-        ></iframe>
-      )}
+      {/* Construct the Google Drive embed URL */}
+      <iframe
+        src={`https://drive.google.com/file/d/${videoUrl}/preview`}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          border: 0,
+        }}
+        allowFullScreen={true}
+        title={title} // Added title for better accessibility
+      ></iframe>
     </div>
   );
 };
