@@ -1,0 +1,12 @@
+# render.yaml
+services:
+  - name: client
+    type: web
+    env: static
+    repo: https://github.com/ipbuzzofficial/client.git
+    branch: main  # or any branch you'd like to deploy
+    staticPublishPath: build  # or .next for Next.js, dist for Vite
+    buildCommand: npm install && npm run build
+    envVars:
+      - key: REACT_APP_API_URL  # example of environment variable
+        value: "https://bkkk-v63g.onrender.com"
